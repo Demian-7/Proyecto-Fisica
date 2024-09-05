@@ -34,27 +34,8 @@ class Proyectile{
     }
   }
   
-  //PLAYER
-  class Player{
-    constructor(playerX, playerY, playerW, playerH){
-      this.pos = createVector(playerX,playerY);
-      this.w = playerW;
-      this.h = playerH;
-    }
-    
-    
-    dibujar(){
-      rect(this.pos.x,this.pos.y,this.w, this.h);
-    }
-    move(velX,velY,dt){
-      let velocidad = createVector(velX,velY)
-      this.pos.x += velocidad.x * dt ;
-      this.pos.y += velocidad.y * dt ;
-      
-    }
-  }
-  
   //ENEMIGOS
+  
   class Enemy{
     constructor(enemyX, enemyY, enemyW, enemyH){
       this.pos = createVector(enemyX,enemyY);
