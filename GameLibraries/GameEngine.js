@@ -15,10 +15,9 @@ class GameEngine {
         if (GameEngine.instance) {
             return GameEngine.instance;  // Return the existing instance if it exists
         }
-        GameEngine.instance = this; 
+        GameEngine.instance = this;
 
-        this.gameObjectList = [];  // List to store all game objects
-
+        this.Start();
         return this;
     }
 
@@ -28,7 +27,7 @@ class GameEngine {
      * @param {GameObject} gameObject - The game object to add.
      */
     AddGameObject(gameObject) {
-        this.gameObjectList.push(gameObject); 
+        this.gameObjectList.push(gameObject);
     }
 
     /**
@@ -37,25 +36,28 @@ class GameEngine {
      * @param {GameObject} gameObject - The game object to remove.
      */
     RemoveGameObject(gameObject) {
-        const index = this.gameObjectList.indexOf(gameObject);  
+        const index = this.gameObjectList.indexOf(gameObject);
         if (index !== -1) {
-            this.gameObjectList.splice(index, 1);  
+            this.gameObjectList.splice(index, 1);
         }
     }
 
     /**
-     * Starts the game engine. Placeholder for future initialization code.
+     * Starts the game engine and P5 canvas.
      */
     Start() {
-        // Placeholder for start logic
+        createCanvas(WIDTH, HEIGHT); //P5 Canvas
+        this.gameObjectList = [];  // List to store all game objects
     }
 
     /**
      * Renders all game objects in the game engine.
      */
     RenderAll() {
+        background(0);
+        fill(255);
         this.gameObjectList.forEach(gameObject => {
-            gameObject.Render();  
+            gameObject.Render();
         });
     }
 
@@ -66,7 +68,7 @@ class GameEngine {
      */
     UpdateAll(dt) {
         this.gameObjectList.forEach(gameObject => {
-            gameObject.Update(dt);  
+            gameObject.Update(dt);
         });
     }
 
