@@ -1,19 +1,31 @@
 let y = 50;
 let gravedad = 9.81;
 
-const WIDTH = 800;
-const HEIGHT = 800;
+const WIDTH = 900;
+const HEIGHT = 400;
+
+
 
 function setup() {
   game = new GameEngine(WIDTH, HEIGHT);
   player = new Player(100, 100, 50, 50);
+  theFloor = new TheFloor();
+  enemy = new GroundEnemy(WIDTH-100, HEIGHT-30, 20, 10);
 
-  //ball = new Proyectile(400,y,50, 10, 10);
+
+}
+
+function keyPressed() {
+
+  if (key == ' ' ) {
+    player.jump();
+  }
 }
 
 function draw() {
 
-  let dt = deltaTime / 1000;
+  let dt = deltaTime / 100;
+  //print(1/(deltaTime/1000));
 
 
   //Process
@@ -24,9 +36,8 @@ function draw() {
 
   //Render
   game.RenderAll();
-  //player.dibujar();
-  //ball.dibujar();
+
 
   //Collitions
-  game.CollideAll();
+  game.CheckCollitionAll();
 }

@@ -12,16 +12,20 @@ class Player extends GameObject {
     constructor(playerX, playerY, playerW, playerH) {
         super();
         this.name = "Player";
+        this.colliderShape = ColliderShape.SQUARE;
         this.pos = createVector(playerX, playerY);
         this.w = playerW;
         this.h = playerH;
-        this.speed = 10;
+        this.vy = 0;
+        this.gravity = 98;
+        this.jumpForce = 200;
     }
 
     /**
      * Renders the player on the screen as a rectangle.
      */
     Render() {
+        fill(255, 255, 255);
         rect(this.pos.x, this.pos.y, this.w, this.h);
     }
 
@@ -31,10 +35,17 @@ class Player extends GameObject {
      * @param {Number} dt - Delta time used for updating the player's position.
      */
     Update(dt) {
-        let velocidad = createVector(this.speed, this.speed);
-        this.pos.x += velocidad.x * dt;
-        this.pos.y += velocidad.y * dt;
+        this.pos.y += this.vy*dt;
+        this.vy += this.gravity*dt;
+        this.pos.y = constrain(this.pos.y, 0, HEIGHT - this.h)
     }
+
+
+    jump(){
+        if(this.pos.y == HEIGHT - this.h){
+          this.vy = -this.jumpForce;
+        }
+      }
 
     /**
      * Handles collisions with other game objects.
@@ -43,5 +54,10 @@ class Player extends GameObject {
      */
     Collide(other) {
         // Collision logic here
+        print(this.name + " collided with " + other.name);
+    }
+
+    CheckCollition(other) {
+        //console.log(this.name + " : Collide() is not yet defined");  // Default placeholder message
     }
 }

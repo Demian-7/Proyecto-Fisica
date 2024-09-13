@@ -18,6 +18,7 @@ class GameEngine {
         GameEngine.instance = this;
 
         this.Start();
+        this.gameOver=false;
         return this;
     }
 
@@ -56,8 +57,10 @@ class GameEngine {
     RenderAll() {
         background(0);
         fill(255);
+        //print("Frame______________________________________")
         this.gameObjectList.forEach(gameObject => {
             gameObject.Render();
+            //print(gameObject.name + " rendering...")
         });
     }
 
@@ -73,13 +76,32 @@ class GameEngine {
     }
 
     /**
-     * Handles collisions between all game objects.
-     * Placeholder for future collision detection logic.
+     * Check collisions between all game objects.
      */
-    CollideAll() {
-        // Placeholder for collision detection logic
+    CheckCollitionAll() {
+
+        for (let index = 0; index < this.gameObjectList.length; index++) {   
+            if(this.gameObjectList[index].colliderShape!=null){
+                for (let j = 0; j < this.gameObjectList.length; j++) {
+                    if (this.gameObjectList[index] != this.gameObjectList[j]) {
+                       
+                        this.gameObjectList[index].CheckCollition(this.gameObjectList[j])
+                    }
+                }
+            }
+            const element = this.gameObjectList[index];
+
+        }
     }
 }
+
+
+const ColliderShape = {
+    NULL: null,
+    DOT: 'dot',
+    CIRCLE: 'circle',
+    SQUARE: 'square'
+};
 
 
 /**
@@ -94,6 +116,7 @@ class GameObject {
      */
     constructor() {
         this.name = "GameObject not implemented";  // Default name for the game object
+        this.colliderShape = null;
         GameEngine.instance.AddGameObject(this);  // Automatically add this object to the game engine
     }
 
@@ -118,7 +141,7 @@ class GameObject {
      * 
      * @param {GameObject} other - The other game object this object collides with.
      */
-    Collide(other) {
+    CheckCollition(other) {
         console.log(this.name + " : Collide() is not yet defined");  // Default placeholder message
     }
 }
