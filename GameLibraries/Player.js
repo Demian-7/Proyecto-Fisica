@@ -79,11 +79,7 @@ class Player extends GameObject {
 
         //ELIMINAR MAS ADELANTE, SOLO TEST
         // Ground collision 
-         if (this.pos.y >= HEIGHT - this.size / 2) {
-          this.pos.y = HEIGHT - this.size / 2;
-           this.vel.y = 0;
-           this.isGliding = false; // Stop gliding when on the ground
-       }
+         
     }
 
     //Salto
@@ -170,9 +166,14 @@ class Player extends GameObject {
     Collide(other) {
         // Collision logic here
         print(this.name + " collided with " + other.name);
+        this.pos.y = other ;
+           this.vel.y = 0;
     }
 
     CheckCollition(other) {
         //console.log(this.name + " : Collide() is not yet defined");  // Default placeholder message
+        if (this.pos.y >= HEIGHT - this.size) {
+          this.Collide(HEIGHT - this.size)
+       }
     }
 }

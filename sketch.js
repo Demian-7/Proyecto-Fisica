@@ -4,7 +4,7 @@ let gravedad = 9.81;
 const WIDTH = 800;
 const HEIGHT = 400;
 
-
+let clouds= []
 
 function setup() {
   game = new GameEngine(WIDTH, HEIGHT);
@@ -13,7 +13,9 @@ function setup() {
   player = new Player(100, 100, 40);
  // theFloor = new TheFloor();
   enemy = new GroundEnemy(WIDTH-100, HEIGHT-30, 20, 10);
-
+  for(let i=0; i<3; i++){
+  clouds.push(new CloudLayer(i + 1));
+  }
 
 }
 
