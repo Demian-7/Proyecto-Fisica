@@ -174,6 +174,6 @@ class Player extends GameObject {
         //console.log(this.name + " : Collide() is not yet defined");  // Default placeholder message
         if (this.pos.y >= HEIGHT - this.size) {
           this.Collide(HEIGHT - this.size)
-       }
+        }
     }
 }
