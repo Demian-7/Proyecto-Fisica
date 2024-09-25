@@ -9,9 +9,9 @@ const HEIGHT = 400;
 function setup() {
   game = new GameEngine(WIDTH, HEIGHT);
   gameController = new GameController();
-  gameController.setupGame();
-  player = new Player(100, 100, 50, 50);
-  theFloor = new TheFloor();
+  
+  player = new Player(100, 100, 40);
+ // theFloor = new TheFloor();
   enemy = new GroundEnemy(WIDTH-100, HEIGHT-30, 20, 10);
 
 
@@ -20,16 +20,16 @@ function setup() {
 function keyPressed() {
 
   if (key == ' ' ) {
-    player.jump();
+    player.Jump();
   }
   if (key == 'Control'){
-    
+    player.FallFast();
   }
 }
 
 function draw() {
 
-  let dt = deltaTime / 100;
+  let dt = deltaTime / 1000;
   //print(1/(deltaTime/1000));
 
 

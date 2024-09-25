@@ -8,7 +8,7 @@ class GameController extends GameObject {
         this.bossSpawnDelay = 30000;
         this.bossCount = 0;
         this.projectiles = [];
-        this.clouds = [];
+        this.clouds = []; // No es necesario una ves que las nubes esten implementadas en su clase.
         this.gameOver = false;
         this.score = 0;
         this.highScore = 0;
@@ -17,6 +17,7 @@ class GameController extends GameObject {
         this.lastEnemySpawnTime = 0;
         this.startTime = 0;
         this.playAgainButton = null;
+        this.setupGame();
     }
 
     // Setup the game, initialize variables and UI
