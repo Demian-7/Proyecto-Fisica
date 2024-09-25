@@ -17,27 +17,27 @@ class GameController extends GameObject {
         this.lastEnemySpawnTime = 0;
         this.startTime = 0;
         this.playAgainButton = null;
-        this.setupGame();
+        this.SetUpGame();
     }
 
     // Setup the game, initialize variables and UI
-    setupGame() {
+    SetUpGame() {
         this.startTime = millis();
         this.playAgainButton = createButton('Play Again');
         this.playAgainButton.position(width / 2 - 50, height / 2 + 30);
-        this.playAgainButton.mousePressed(() => this.restartGame());
+        this.playAgainButton.mousePressed(() => this.RestartGame());
         this.playAgainButton.hide();
     }
 
     // Restart the game (reset the states)
-    restartGame() {
+    RestartGame() {
         this.score = 0;
         this.gameOver = false;
         this.enemies = [];
         this.projectiles = [];
         this.boss = null;
         this.bossCount = 0;
-        this.setupGame();
+        this.SetUpGame();
     }
 
     Update(dt) {
