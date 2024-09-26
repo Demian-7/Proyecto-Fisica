@@ -2,7 +2,7 @@ class GameController extends GameObject {
     constructor() {
         super();
         this.name = "GameController";
-        this.colliderShape = null;
+        this.colliderShape = ColliderShape.NULL;
         this.enemies = [];
         this.boss = null;
         this.bossCooldown = 0;
