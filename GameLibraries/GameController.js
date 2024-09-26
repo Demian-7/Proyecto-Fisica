@@ -42,8 +42,16 @@ class GameController extends GameObject {
     }
 
     Update(dt) {
-        // Logic to update the game state
-        // Logica para crear a los enemigos
+        let adjustedEnemySpawnInterval = max(500, this.enemySpawnInterval - this.score * 8.33);
+        
+        // Do not spawn regular enemies when the boss is active
+        if (this.boss === null && millis() - this.lastEnemySpawnTime > adjustedEnemySpawnInterval) {
+
+
+            let enemyType = random(['ground', 'flying']);
+            new Enemy(enemyType, this.score); // Pass score to constructor
+            this.lastEnemySpawnTime = millis();
+        }
     }
 
     Render() {

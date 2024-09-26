@@ -13,11 +13,6 @@ function setup() {
   player = new Player(100, 100, 40);
   
   // theFloor = new TheFloor();
-   enemy = new GroundEnemy('ground', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
   for(let i=0; i<3; i++){
   clouds.push(new CloudLayer(i + 1));
   }
