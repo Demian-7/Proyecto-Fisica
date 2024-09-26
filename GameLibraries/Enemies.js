@@ -11,7 +11,7 @@ class Enemy extends GameObject {
     this.h = this.size;
 
     this.vel = createVector(0, 0);
-
+    
     this.angle = 0; // For flying enemies
     this.amplitude = random(20, 50); // For sine wave movement
 
@@ -24,7 +24,7 @@ class Enemy extends GameObject {
     if (type === 'ground') {
       this.isCircle = false; // Ground enemies are always squares
       this.colliderShape = ColliderShape.SQUARE;
-      this.pos.y = HEIGHT - this.size / 2;
+      this.pos.y = HEIGHT - this.size ;
       this.vel.x = -400 * speedMultiplier; // Increase speed
     } else if (type === 'flying') {
       this.isCircle = true; // Flying enemies are always circles
@@ -36,6 +36,7 @@ class Enemy extends GameObject {
       this.angularSpeed = random(1, 3); // radians per second
     }
     
+    this.gameOver = false;
   }
 
   offscreen() {
@@ -43,30 +44,42 @@ class Enemy extends GameObject {
   }
 
   Render() {
-    stroke(255); // Stroke color
-    strokeWeight(2); // Stroke weight
-    fill(220, 40, 50);
+    if (!this.gameOver){
+      stroke(255); // Stroke color
+      strokeWeight(2); // Stroke weight
+      fill(220, 40, 50);
 
 
 
-    if (this.isCircle) {
-      ellipse(this.pos.x, this.pos.y, this.size);  // Draw a circle
-    } else {
-      rectMode(CENTER);
-      rect(this.pos.x, this.pos.y, this.size );  // Draw a square
+      if (this.isCircle) {
+        ellipse(this.pos.x, this.pos.y, this.size);  // Draw a circle
+      } else {
+            
+        rect(this.pos.x, this.pos.y, this.w , this.h  );  // Draw a square
+      }
+
     }
   }
 
   Update(dt) {
-    this.pos.x += this.vel.x*dt;
-    // If flying enemy (using sine wave motion)
-    if (this.type === 'flying' && this.isCircle) {
-      this.angle += random(1, 3) * dt;
-      this.pos.y += sin(this.angle) * this.amplitude * dt;  // Vertical movement using sine
+      if (!this.gameOver){
+      this.pos.x += this.vel.x*dt;
+      // If flying enemy (using sine wave motion)
+      if (this.type === 'flying' && this.isCircle) {
+        this.angle += random(1, 3) * dt;
+        this.pos.y += sin(this.angle) * this.amplitude * dt;  // Vertical movement using sine
+      }
+      this.pos.y = constrain(this.pos.y, 0, HEIGHT -this.h);
     }
-    this.pos.y = constrain(this.pos.y, 0, HEIGHT -this.size);
   }
 
+  GameIsOver(){
+    console.log("ENEMY: GAME IS OVER");
+    this.gameOver = true;
+  }
+  Restart(){
+    this.gameOver = false;
+  }
   Collide(other){
 
   }

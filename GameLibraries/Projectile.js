@@ -7,25 +7,31 @@ class Projectile extends GameObject {
         this.type = type; // 'square' or 'triangle'
         this.colliderShape = ColliderShape.SQUARE;
         this.size = 20; // Smaller than enemies
+        this.h = this.size;
+        this.w = this.size;
         // Velocity towards the player's position with slight random offset
         let aim = p5.Vector.sub(player.pos, this.pos);
         aim.rotate(angleOffset); // Apply the random angle offset to create gaps
         this.vel = aim.setMag(250); // Adjust speed to 250
+
+        this.gameOver = false;
     }
   
     Update(dt) {
+      if (!(this.gameOver)){
         let velocityStep = p5.Vector.mult(this.vel, dt);
         this.pos.add(velocityStep);
-        
+      }
     }
   
     Render() {
+      if (!(this.gameOver)){
         fill(255, 0, 0); // Same red color as enemies
         noStroke();
         
         if (this.type === 'square') {
             this.colliderShape = ColliderShape.SQUARE;
-            rectMode(CENTER);
+            
             rect(this.pos.x, this.pos.y, this.size, this.size);
         } else if (this.type === 'triangle') {
             this.colliderShape = ColliderShape.TRIANGLE;
@@ -38,6 +44,11 @@ class Projectile extends GameObject {
             );
             pop();
           }
+      }
+    }
+
+    GameIsOver(){
+      this.gameOver = true;
     }
   
     Offscreen() {
