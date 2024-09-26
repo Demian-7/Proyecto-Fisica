@@ -8,17 +8,23 @@ class Projectile360 extends GameObject{
         this.size = 20; // Smaller than enemies
         // Velocity in the direction of the angle
         this.vel = createVector(cos(this.angle), sin(this.angle)).setMag(200); // Adjust speed as needed
+
+        this.gameOver = false;
     }
   
     Update(dt) {
-      let velocityStep = p5.Vector.mult(this.vel, dt);
-      this.pos.add(velocityStep);
+      if (!(this.gameOver)){
+        let velocityStep = p5.Vector.mult(this.vel, dt);
+        this.pos.add(velocityStep);
+      }
     }
   
     Render() {
-      fill(255, 0, 0); // Same red color as enemies
-      noStroke();
-      ellipse(this.pos.x, this.pos.y, this.size); // Use a circular shape for the 360° bullets
+      if (!(this.gameOver)){
+        fill(255, 0, 0); // Same red color as enemies
+        noStroke();
+        ellipse(this.pos.x, this.pos.y, this.size); // Use a circular shape for the 360° bullets
+      }
     }
   
     Offscreen() {
@@ -30,6 +36,9 @@ class Projectile360 extends GameObject{
       );
     }
 
+    GameIsOver(){
+      this.gameOver = true;
+    }
     Collide(other){
 
     }

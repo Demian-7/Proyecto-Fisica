@@ -12,6 +12,7 @@ class GameController extends GameObject {
         this.clouds = []; // No es necesario una ves que las nubes esten implementadas en su clase.
         this.gameOver = false;
         this.score = 0;
+        this.enemyList = [];
         this.highScore = 0;
         this.gameStarted = false;
         this.enemySpawnInterval = 1500;
@@ -40,6 +41,7 @@ class GameController extends GameObject {
 
     // Restart the game (reset the states)
     RestartGame() {
+        location.reload();
         console.log("restart");
         this.score = 0;
         this.gameOver = false;
@@ -50,6 +52,7 @@ class GameController extends GameObject {
         this.bossCount = 0;
         this.player.Reset();
         this.playAgainButton.hide();
+
     }
 
     GetPlayer(player){
@@ -64,8 +67,9 @@ class GameController extends GameObject {
 
 
             let enemyType = random(['ground', 'flying']);
-            new Enemy(enemyType, this.score); // Pass score to constructor
+            this.enemyList.push(new Enemy(enemyType, this.score)); // Pass score to constructor
             this.lastEnemySpawnTime = millis();
+                
         }
     
         if (this.boss !== null) {
@@ -81,10 +85,10 @@ class GameController extends GameObject {
             }
         }
         // If there's no boss and the cooldown has passed, spawn a new one
-        if (this.boss === null && this.bossCooldown <= 0 && this.score >= 3) {
+        if (this.boss === null && this.bossCooldown <= 0 && this.score >= 30) {
             this.bossCount++; // Increment the boss count each time a new boss spawns
              // Pass the boss count to determine bullets
-            this.boss = new Boss(this.bossCount); // Remove the boss
+            this.boss = new Boss(this.bossCount);// Remove the boss
         }
         
         //Game over Condition
@@ -96,9 +100,33 @@ class GameController extends GameObject {
               this.playAgainButton.show();
             
         }
+        if(this.gameOver){
+             this.GameOver();
+        }
+        
         this.score = floor((millis() - this.startTime) / 1000);
         console.log("Score: " + this.score);
 
+    }
+
+    GameOver(){
+        for (let i = this.enemyList.length-1; i>=0; i--){
+            this.enemyList[i].GameIsOver();
+            this.enemyList.splice(i,1);  
+            console.log(this.enemyList[i]);
+        }
+         if (this.boss != null){
+            this.boss.GameIsOver();
+         }
+    }
+
+    RestartObjects(){
+        for (let i = this.enemyList.length-1; i>=0; i--){
+            this.enemyList[i].Restart();
+             
+            console.log(this.enemyList[i]);
+        }
+        this.boss.Restart();
     }
 
     Render() {

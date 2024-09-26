@@ -22,15 +22,19 @@ class Boss extends GameObject {
       this.isDestroyed = false;
       this.shotsFired = 0; // Track the number of bullets fired
       this.timeBetweenShots = 0.2; // Time between each bullet
+      this.projectileList = [];
+      this.projectileList360 = [];
   
       // Calculate the number of bullets for this boss, capping at 20
       this.maxShots = min(5 + (bossCount - 1) * 3, 20); // Each new boss shoots 3 more bullets, capped at 20
       this.attackCycles = 0; // Number of shooting cycles
       this.maxCycles = 4; // After 4 cycles, despawn
+
+      this.gameOver = false;
     }
   
     Render() {
-      if(!this.isDestroyed){
+      if(!this.isDestroyed && !this.gameOver){
         push();
         translate(this.pos.x, this.pos.y);
         rotate(this.angle);
@@ -47,6 +51,7 @@ class Boss extends GameObject {
     }
 
     Update(dt){
+      if (!(this.gameOver)){
       if (this.state === 'entering') {
         this.pos.add(p5.Vector.mult(this.vel, dt));
         if (this.pos.x <= width - this.size) {
@@ -116,6 +121,21 @@ class Boss extends GameObject {
   
       // Limit angular velocity
       this.angularVelocity = constrain(this.angularVelocity, -5, 5);
+     }
+     else {
+      
+      for (let i = this.projectileList.length -1; i>=0; i--){
+        this.projectileList[i].GameIsOver();
+      }
+      for (let i = this.projectileList360.length -1; i>=0; i--){
+        this.projectileList360[i].GameIsOver();
+      }
+      
+     }
+    }
+
+    GameIsOver(){
+      this.gameOver = true;
     }
 
     CheckCollition(other){
@@ -126,7 +146,7 @@ class Boss extends GameObject {
       // Slightly offset each projectile's trajectory to create gaps
       let projType = random(['square', 'triangle']);
       let offset = random(-PI / 16, PI / 16); // Random offset between -11.25 and +11.25 degrees
-      new Projectile(this.pos.copy(), projType, offset);  
+      this.projectileList.push(new Projectile(this.pos.copy(), projType, offset));  
     }
 
     Shoot360() {
@@ -134,7 +154,7 @@ class Boss extends GameObject {
       let numBullets = 12 * this.bossCount;
       for (let i = 0; i < numBullets; i++) {
         let angle = map(i, 0, numBullets, 0, TWO_PI); // Distribute bullets evenly
-        new Projectile360(this.pos.copy(), angle);
+        this.projectileList360.push(new Projectile360(this.pos.copy(), angle));
       }
     }
    
