@@ -3,6 +3,7 @@ class Projectile360 extends GameObject{
     constructor(pos, angle) {
         super();
         this.name = "Projectile360";
+        this.colliderShape = ColliderShape.CIRCLE;
         this.pos = pos.copy(); // Starting position is the boss's position
         this.angle = angle; // The direction of the projectile in radians
         this.size = 20; // Smaller than enemies
