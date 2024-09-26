@@ -102,7 +102,8 @@ const ColliderShape = {
     NULL: null,
     DOT: 'dot',
     CIRCLE: 'circle',
-    SQUARE: 'square'
+    SQUARE: 'square',
+    TRIANGLE: 'triangle'
 };
 
 

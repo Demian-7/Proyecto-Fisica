@@ -28,6 +28,13 @@ class GameController extends GameObject {
         this.playAgainButton.position(width / 2 - 50, height / 2 + 30);
         this.playAgainButton.mousePressed(() => this.RestartGame());
         this.playAgainButton.hide();
+
+        if (!this.gameOver) {
+            if (!this.gameStarted) {
+                this.startTime = millis();
+                this.gameStarted = true;
+            }
+        }
     }
 
     // Restart the game (reset the states)
@@ -43,7 +50,7 @@ class GameController extends GameObject {
 
     Update(dt) {
         let adjustedEnemySpawnInterval = max(500, this.enemySpawnInterval - this.score * 8.33);
-        
+          
         // Do not spawn regular enemies when the boss is active
         if (this.boss === null && millis() - this.lastEnemySpawnTime > adjustedEnemySpawnInterval) {
 
@@ -52,6 +59,27 @@ class GameController extends GameObject {
             new Enemy(enemyType, this.score); // Pass score to constructor
             this.lastEnemySpawnTime = millis();
         }
+    
+        if (this.boss !== null) {
+            // Check if the boss is destroyed
+            if (this.boss.isDestroyed) {
+                this.boss = null; // Remove the boss
+                this.bossCooldown = this.bossSpawnDelay; // Start the cooldown timer
+            }
+        } else {
+        // Decrease the cooldown timer if the boss is not present
+            if (this.bossCooldown > 0) {
+                this.bossCooldown -= dt * 1000; // Convert deltaTimeSec to milliseconds
+            }
+        }
+        // If there's no boss and the cooldown has passed, spawn a new one
+        if (this.boss === null && this.bossCooldown <= 0 && this.score >= 3) {
+            this.bossCount++; // Increment the boss count each time a new boss spawns
+             // Pass the boss count to determine bullets
+            this.boss = new Boss(this.bossCount);; // Remove the boss
+        }
+        this.score = floor((millis() - this.startTime) / 1000);
+        console.log("Score: " + this.score);
     }
 
     Render() {
