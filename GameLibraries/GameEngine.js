@@ -18,7 +18,7 @@ class GameEngine {
         GameEngine.instance = this;
 
         this.Start();
-        this.gameOver=false;
+        this.gameOver = false;
         return this;
     }
 
@@ -80,11 +80,11 @@ class GameEngine {
      */
     CheckCollitionAll() {
 
-        for (let index = 0; index < this.gameObjectList.length; index++) {   
-            if(this.gameObjectList[index].colliderShape!=null){
+        for (let index = 0; index < this.gameObjectList.length; index++) {
+            if (this.gameObjectList[index].colliderShape != null) {
                 for (let j = 0; j < this.gameObjectList.length; j++) {
                     if (this.gameObjectList[index] != this.gameObjectList[j]) {
-                       
+
                         this.gameObjectList[index].CheckCollition(this.gameObjectList[j])
                     }
                 }
