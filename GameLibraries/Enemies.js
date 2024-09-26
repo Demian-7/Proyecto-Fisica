@@ -2,9 +2,8 @@ class GroundEnemy extends GameObject {
 
   constructor(type, posX, posY, size, speed, score) {
     super();
-    this.name = "Ground Enemy"
+    this.name = "Enemy"
     this.type = type;  // Set the enemy type ('ground' or 'flying')
-
     this.pos = createVector(posX, posY);
     this.w = size;
     this.h = size;
@@ -33,6 +32,7 @@ class GroundEnemy extends GameObject {
       this.amplitude = random(20, 50);
       this.angularSpeed = random(1, 3); // radians per second
     }
+    
   }
 
   SetSpeed(speed) {
@@ -62,6 +62,7 @@ class GroundEnemy extends GameObject {
       this.angle += random(1, 3) * dt;
       this.pos.y += sin(this.angle) * this.amplitude * dt;  // Vertical movement using sine
     }
+    this.pos.y = constrain(this.pos.y, 0, HEIGHT -this.size);
   }
 
   Collide(other){

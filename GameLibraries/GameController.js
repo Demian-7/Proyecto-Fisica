@@ -2,7 +2,7 @@ class GameController extends GameObject {
     constructor() {
         super();
         this.name = "GameController";
-        this.colliderShape = null;
+        this.colliderShape = ColliderShape.NULL;
         this.enemies = [];
         this.boss = null;
         this.bossCooldown = 0;
@@ -43,6 +43,7 @@ class GameController extends GameObject {
 
     Update(dt) {
         // Logic to update the game state
+        // Logica para crear a los enemigos
     }
 
     Render() {

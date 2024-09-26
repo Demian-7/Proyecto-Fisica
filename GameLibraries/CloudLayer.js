@@ -3,6 +3,8 @@ class CloudLayer extends GameObject {
     constructor(speedMultiplier) {
         super();
         this.clouds = [];
+        this.name = "Cloud Layer";
+        this.colliderShape = ColliderShape.NULL;
         this.speedMultiplier = speedMultiplier;
         this.speed = speedMultiplier * 50; // pixels per second
         this.Generate();

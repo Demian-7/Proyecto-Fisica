@@ -13,11 +13,11 @@ function setup() {
   player = new Player(100, 100, 40);
   
   // theFloor = new TheFloor();
-  enemy = new GroundEnemy(random(['ground', 'flying']), WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-  enemy = new GroundEnemy(random(['ground', 'flying']), WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-  enemy = new GroundEnemy(random(['ground', 'flying']), WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-  enemy = new GroundEnemy(random(['ground', 'flying']), WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
-  enemy = new GroundEnemy(random(['ground', 'flying']), WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
+   enemy = new GroundEnemy('ground', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
+   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
+   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
+   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
+   enemy = new GroundEnemy('flying', WIDTH - 100, HEIGHT - 10, 20, 100, 100);  // Ground enemy (square)
   for(let i=0; i<3; i++){
   clouds.push(new CloudLayer(i + 1));
   }
@@ -34,8 +34,18 @@ function keyPressed() {
   }
 }
 
+function mousePressed() {
+  // if (!musicStarted) {
+  //   bgMusic.loop();
+  //   musicStarted = true;
+  // } !gameOver && -- Esto estaba en el if de abajo
+  if (player.Contains(mouseX,mouseY)) {
+    
+    player.ChangeShape();
+  }
+}
+
 function draw() {
-  console.log("player pos x: " + player.pos.x + " player pos y: " + player.pos.y)
   let dt = deltaTime / 1000;
   //print(1/(deltaTime/1000));
 
