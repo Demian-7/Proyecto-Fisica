@@ -20,12 +20,19 @@ class GameController extends GameObject {
         this.startTime = 0;
         this.playAgainButton = null;
         this.player = null;
+        
+        this.scoreText = null;
+        this.highScoreText = null;
+        this.gameOverText = null;
+        
         this.SetUpGame();
     }
 
     // Setup the game, initialize variables and UI
     SetUpGame() {
         this.startTime = millis();
+        
+        
         this.playAgainButton = createButton('Play Again');
         this.playAgainButton.position(width / 2 - 50, height / 2 + 30);
         this.playAgainButton.mousePressed(() => this.RestartGame());
@@ -61,7 +68,8 @@ class GameController extends GameObject {
 
     Update(dt) {
         let adjustedEnemySpawnInterval = max(500, this.enemySpawnInterval - this.score * 8.33);
-          
+        this.DisplayScore();
+        
         // Do not spawn regular enemies when the boss is active
         if (this.boss === null && millis() - this.lastEnemySpawnTime > adjustedEnemySpawnInterval) {
 
@@ -94,19 +102,22 @@ class GameController extends GameObject {
         //Game over Condition
         if(this.player.GameOver()){
             this.gameOver = true;
+            //highscore y game over
+            
             if (this.score > this.highScore) {
                 this.highScore = this.score;
               }
               this.playAgainButton.show();
+              this.DisplayGameOver();
             
         }
         if(this.gameOver){
              this.GameOver();
         }
-        
+        else{
         this.score = floor((millis() - this.startTime) / 1000);
         console.log("Score: " + this.score);
-
+        }
     }
 
     GameOver(){
@@ -118,6 +129,22 @@ class GameController extends GameObject {
          if (this.boss != null){
             this.boss.GameIsOver();
          }
+    }
+
+    DisplayScore(){
+        fill(250,250,0);
+        textSize(16);
+        textAlign(LEFT);
+        text('Score: ' + this.score, 10, 20);
+        textAlign(RIGHT);
+        text('High Score: ' + this.highScore, WIDTH - 10, 20);
+    }
+
+    DisplayGameOver(){
+        fill(255, 0, 0);
+        textSize(48);
+        textAlign(CENTER);
+        text('Game Over', WIDTH / 2, HEIGHT / 2);
     }
 
     RestartObjects(){

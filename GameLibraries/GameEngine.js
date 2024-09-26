@@ -55,7 +55,7 @@ class GameEngine {
      * Renders all game objects in the game engine.
      */
     RenderAll() {
-        background(0);
+        //background(0);
         fill(255);
         //print("Frame______________________________________")
         this.gameObjectList.forEach(gameObject => {

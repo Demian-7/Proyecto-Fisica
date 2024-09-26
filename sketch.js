@@ -2,6 +2,9 @@ const WIDTH = 800;
 const HEIGHT = 400;
 
 let clouds= []
+let bgMusic = null;
+let musicStarted = false;
+let bgImage = null;
 
 function setup() {
   game = new GameEngine(WIDTH, HEIGHT);
@@ -10,11 +13,16 @@ function setup() {
   player = new Player(100, 100, 40);
   
   gameController.GetPlayer(player);
+
+  bgMusic = loadSound('Ascendancy of the Cube.mp3');
+  bgImage = loadImage('synthwave_sunset.gif');
+
   // theFloor = new TheFloor();
   for(let i=0; i<3; i++){
   clouds.push(new CloudLayer(i + 1));
   }
 
+  bgMusic.setVolume(0.2);
 }
 
 function keyPressed() {
@@ -28,19 +36,24 @@ function keyPressed() {
 }
 
 function mousePressed() {
-  // if (!musicStarted) {
-  //   bgMusic.loop();
-  //   musicStarted = true;
-  // } !gameOver && -- Esto estaba en el if de abajo
-  if (player.Contains(mouseX,mouseY)) {
+    if (!musicStarted) {
+     bgMusic.loop();
+     musicStarted = true;
+
+     if (getAudioContext().state !== 'running'){
+      getAudioContext.resume();
+     }
+    }
+    if (player.Contains(mouseX,mouseY)) {
     
     player.ChangeShape();
-  }
+    }
 }
 
 function draw() {
   let dt = deltaTime / 1000;
   //print(1/(deltaTime/1000));
+  image(bgImage,0,0, WIDTH, HEIGHT);
 
 
   //Process
@@ -55,4 +68,5 @@ function draw() {
 
   //Collitions
   game.CheckCollitionAll();
+  
 }
