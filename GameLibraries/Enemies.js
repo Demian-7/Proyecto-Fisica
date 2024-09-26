@@ -73,29 +73,3 @@ class Enemy extends GameObject {
     
   }
 }
-
-    /*
-    if (other.isCircle) {
-      // Circle-Rectangle Collision logic
-      let testX = other.pos.x;
-      let testY = other.pos.y;
-
-      if (other.pos.x < this.pos.x) testX = this.pos.x;
-      else if (other.pos.x > this.pos.x + this.size) testX = this.pos.x + this.size;
-      if (other.pos.y < this.pos.y) testY = this.pos.y;
-      else if (other.pos.y > this.pos.y + this.size) testY = this.pos.y + this.size;
-
-      let distX = other.pos.x - testX;
-      let distY = other.pos.y - testY;
-      let distance = sqrt(distX * distX + distY * distY);
-
-      return distance <= other.size / 2;
-    } else {
-      // Rectangle-Rectangle Collision
-      return !(
-        other.pos.x + other.size / 2 < this.pos.x ||
-        other.pos.x - other.size / 2 > this.pos.x + this.size ||
-        other.pos.y + other.size / 2 < this.pos.y ||
-        other.pos.y - other.size / 2 > this.pos.y + this.size
-      );
-    }*/ 

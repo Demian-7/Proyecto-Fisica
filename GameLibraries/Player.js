@@ -32,6 +32,7 @@ class Player extends GameObject {
      */
     Render() {
         fill(255, 255, 255);
+        rectMode(CENTER);
         rect(this.pos.x, this.pos.y, this.w, this.h);
         if (this.isGliding){
             this.DrawWings();
