@@ -18,6 +18,7 @@ class GameController extends GameObject {
         this.lastEnemySpawnTime = 0;
         this.startTime = 0;
         this.playAgainButton = null;
+        this.player = null;
         this.SetUpGame();
     }
 
@@ -39,13 +40,20 @@ class GameController extends GameObject {
 
     // Restart the game (reset the states)
     RestartGame() {
+        console.log("restart");
         this.score = 0;
         this.gameOver = false;
+        this.gameStarted = false;
         this.enemies = [];
         this.projectiles = [];
         this.boss = null;
         this.bossCount = 0;
-        this.SetUpGame();
+        this.player.Reset();
+        this.playAgainButton.hide();
+    }
+
+    GetPlayer(player){
+        this.player = player;
     }
 
     Update(dt) {
@@ -76,10 +84,21 @@ class GameController extends GameObject {
         if (this.boss === null && this.bossCooldown <= 0 && this.score >= 3) {
             this.bossCount++; // Increment the boss count each time a new boss spawns
              // Pass the boss count to determine bullets
-            this.boss = new Boss(this.bossCount);; // Remove the boss
+            this.boss = new Boss(this.bossCount); // Remove the boss
+        }
+        
+        //Game over Condition
+        if(this.player.GameOver()){
+            this.gameOver = true;
+            if (this.score > this.highScore) {
+                this.highScore = this.score;
+              }
+              this.playAgainButton.show();
+            
         }
         this.score = floor((millis() - this.startTime) / 1000);
         console.log("Score: " + this.score);
+
     }
 
     Render() {

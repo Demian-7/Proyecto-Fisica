@@ -1,6 +1,3 @@
-let y = 50;
-let gravedad = 9.81;
-
 const WIDTH = 800;
 const HEIGHT = 400;
 
@@ -12,6 +9,7 @@ function setup() {
   
   player = new Player(100, 100, 40);
   
+  gameController.GetPlayer(player);
   // theFloor = new TheFloor();
   for(let i=0; i<3; i++){
   clouds.push(new CloudLayer(i + 1));
