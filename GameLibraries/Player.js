@@ -115,36 +115,39 @@ class Player extends GameObject {
       }
       //Dibujar las alas
       DrawWings() {
-        if (!(this.isCircle)){
-          fill(255, 255, 0); // Yellow color for wings
-          noStroke();
-          let wingSize = this.size / 2;
-          let wingOffsetX = this.size / 2;
-          let wingOffsetY = this.size / 4;   
-
-          let centerX = this.pos.x + this.size / 2;
-          let centerY = this.pos.y + this.size / 2;
-
-          // Left wing
-          triangle(
-            centerX - wingOffsetX,
-            centerY,
-            centerX - wingOffsetX - wingSize,
-            centerY - wingOffsetY,
-            centerX - wingOffsetX - wingSize,
-            centerY + wingOffsetY
-          );
+        fill(255, 255, 0); // Yellow color for wings
+        noStroke();
+        let wingSize = this.size / 2;
+        let wingOffsetX = this.size / 2;
+        let wingOffsetY = this.size / 4;
       
-          // Right wing
-          triangle(
-            centerX + wingOffsetX,
-            centerY,
-            centerX + wingOffsetX + wingSize,
-            centerY - wingOffsetY,
-            centerX + wingOffsetX + wingSize,
-            centerY + wingOffsetY
-          );
+        push();
+        if (this.isCircle) {
+          translate(this.pos.x, this.pos.y);
+        } else {
+          translate(this.pos.x + this.w / 2, this.pos.y + this.h / 2);
         }
+      
+        // Left wing
+        triangle(
+          -wingOffsetX,
+          0,
+          -wingOffsetX - wingSize,
+          -wingOffsetY,
+          -wingOffsetX - wingSize,
+          wingOffsetY
+        );
+      
+        // Right wing
+        triangle(
+          wingOffsetX,
+          0,
+          wingOffsetX + wingSize,
+          -wingOffsetY,
+          wingOffsetX + wingSize,
+          wingOffsetY
+        );
+        pop();
       }
     //Booleans
     StartGlide() {
