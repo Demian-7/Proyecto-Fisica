@@ -186,10 +186,10 @@ class Player extends GameObject {
           return distance < this.circleSize / 2;
         } else {
           return (
-            px > this.pos.x - this.size / 2 &&
-            px < this.pos.x + this.size / 2 &&
-            py > this.pos.y - this.size / 2 &&
-            py < this.pos.y + this.size / 2
+            px > this.pos.x &&
+            px < this.pos.x + this.size &&
+            py > this.pos.y &&
+            py < this.pos.y + this.size 
           );
         }
     }
@@ -286,24 +286,24 @@ class Player extends GameObject {
 
           // Rect to Circle
           if (other.colliderShape == ColliderShape.SQUARE){
-            let testX = other.pos.x;
-            let testY = other.pos.y;
+            let testX = this.pos.x;
+            let testY = this.pos.y;
           
-            let rx = this.pos.x ;
-            let ry = this.pos.y ;
-            let rw = this.size;
-            let rh = this.size;
+            let rx = other.pos.x ;
+            let ry = other.pos.y ;
+            let rw = other.w;
+            let rh = other.h;
           
-            if (other.pos.x < rx) testX = rx;
-            else if (other.pos.x > rx + rw) testX = rx + rw;
-            if (other.pos.y < ry) testY = ry;
-            else if (other.pos.y > ry + rh) testY = ry + rh;
+            if (this.pos.x < rx) testX = rx;
+            else if (this.pos.x > rx + rw) testX = rx + rw;
+            if (this.pos.y < ry) testY = ry;
+            else if (this.pos.y > ry + rh) testY = ry + rh;
           
-            let distX2 = other.pos.x - testX;
-            let distY2 = other.pos.y - testY;
+            let distX2 = this.pos.x - testX;
+            let distY2 = this.pos.y - testY;
             let distance2 = sqrt(distX2 * distX2 + distY2 * distY2);
           
-            if (distance2 <= other.size/2) {
+            if (distance2 <= this.circleSize) {
               impact = true;
               console.log("circle to rect");
             }
