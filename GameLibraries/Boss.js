@@ -5,6 +5,7 @@ class Boss extends GameObject {
       super();
       this.name = "Boss";
       this.size = 50;
+      this.bossCount = bossCount;
       this.pos = createVector(WIDTH - this.size, HEIGHT / 2);
       this.vel = createVector(-100, 0); // Move into the screen
 
@@ -29,18 +30,20 @@ class Boss extends GameObject {
     }
   
     Render() {
-      push();
-      translate(this.pos.x, this.pos.y);
-      rotate(this.angle);
-      stroke(255);
-      strokeWeight(2);
-      fill(255, 108, 20); // Green color for boss
-      triangle(
-        -this.size / 2, this.size / 2,
-        0, -this.size / 2,
-        this.size / 2, this.size / 2
-      );
-      pop();
+      if(!this.isDestroyed){
+        push();
+        translate(this.pos.x, this.pos.y);
+        rotate(this.angle);
+        stroke(255);
+        strokeWeight(2);
+        fill(255, 108, 20); // Green color for boss
+        triangle(
+          -this.size / 2, this.size / 2,
+          0, -this.size / 2,
+          this.size / 2, this.size / 2
+        );
+        pop();
+      }
     }
 
     Update(dt){
@@ -78,7 +81,7 @@ class Boss extends GameObject {
         this.angle += this.angularVelocity * dt;
   
         if (this.shotsFired < this.maxShots && this.shootTimer >= this.timeBetweenShots) {
-          this.shoot();
+          this.Shoot();
           this.shootTimer = 0; // Reset timer for next shot
           this.shotsFired++;
         }
@@ -105,7 +108,7 @@ class Boss extends GameObject {
         }
       } else if (this.state === 'finalShoot') {
         // Fire 12 bullets in a 360-degree pattern
-        this.shoot360();
+        this.Shoot360();
         this.state = 'selfDestruct';
       } else if (this.state === 'selfDestruct') {
         this.isDestroyed = true;
@@ -119,23 +122,23 @@ class Boss extends GameObject {
         
     }
 
-    shoot() {
+    Shoot() {
       // Slightly offset each projectile's trajectory to create gaps
       let projType = random(['square', 'triangle']);
       let offset = random(-PI / 16, PI / 16); // Random offset between -11.25 and +11.25 degrees
       new Projectile(this.pos.copy(), projType, offset);  
     }
 
-    shoot360() {
+    Shoot360() {
       // Shoot 12 bullets in a circle (360 degrees)
-      let numBullets = 12 * bossCount;
+      let numBullets = 12 * this.bossCount;
       for (let i = 0; i < numBullets; i++) {
         let angle = map(i, 0, numBullets, 0, TWO_PI); // Distribute bullets evenly
         new Projectile360(this.pos.copy(), angle);
       }
     }
    
-    selfDestruct() {
+    SelfDestruct() {
       this.state = 'selfDestruct';
       this.isDestroyed = true;
     }

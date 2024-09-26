@@ -38,17 +38,19 @@ class Projectile extends GameObject {
             );
             pop();
           }
-
-          console.log("Projectile pos: " + this.pos);
     }
   
-    offscreen() {
+    Offscreen() {
       return (
         this.pos.x < -this.size ||
         this.pos.x > width + this.size ||
         this.pos.y < -this.size ||
         this.pos.y > height + this.size
       );
+    }
+    
+    Collide(other){
+
     }
 
     CheckCollition(other){

@@ -29,7 +29,12 @@ class GameController extends GameObject {
         this.playAgainButton.mousePressed(() => this.RestartGame());
         this.playAgainButton.hide();
 
-        
+        if (!this.gameOver) {
+            if (!this.gameStarted) {
+                this.startTime = millis();
+                this.gameStarted = true;
+            }
+        }
     }
 
     // Restart the game (reset the states)
@@ -45,7 +50,7 @@ class GameController extends GameObject {
 
     Update(dt) {
         let adjustedEnemySpawnInterval = max(500, this.enemySpawnInterval - this.score * 8.33);
-        boss = new Boss(this.bossCount);
+          
         // Do not spawn regular enemies when the boss is active
         if (this.boss === null && millis() - this.lastEnemySpawnTime > adjustedEnemySpawnInterval) {
 
@@ -54,28 +59,27 @@ class GameController extends GameObject {
             new Enemy(enemyType, this.score); // Pass score to constructor
             this.lastEnemySpawnTime = millis();
         }
-
-        // If there's no boss and the cooldown has passed, spawn a new one
-        if (boss === null && bossCooldown <= 0 && score >= 15) {
-            bossCount++; // Increment the boss count each time a new boss spawns
-            new Boss(bossCount); // Pass the boss count to determine bullets
-        }
-
-        if (boss !== null) {
-            boss.Update(dt);
-            boss.Render();
-
+    
+        if (this.boss !== null) {
             // Check if the boss is destroyed
-            if (boss.isDestroyed) {
-                boss = null; // Remove the boss
-                bossCooldown = bossSpawnDelay; // Start the cooldown timer
+            if (this.boss.isDestroyed) {
+                this.boss = null; // Remove the boss
+                this.bossCooldown = this.bossSpawnDelay; // Start the cooldown timer
             }
         } else {
         // Decrease the cooldown timer if the boss is not present
-            if (bossCooldown > 0) {
-                bossCooldown -= dt * 1000; // Convert deltaTimeSec to milliseconds
+            if (this.bossCooldown > 0) {
+                this.bossCooldown -= dt * 1000; // Convert deltaTimeSec to milliseconds
             }
         }
+        // If there's no boss and the cooldown has passed, spawn a new one
+        if (this.boss === null && this.bossCooldown <= 0 && this.score >= 3) {
+            this.bossCount++; // Increment the boss count each time a new boss spawns
+             // Pass the boss count to determine bullets
+            this.boss = new Boss(this.bossCount);; // Remove the boss
+        }
+        this.score = floor((millis() - this.startTime) / 1000);
+        console.log("Score: " + this.score);
     }
 
     Render() {
