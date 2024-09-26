@@ -26,6 +26,7 @@ class Player extends GameObject {
         this.jumpForce = 800;
         this.maxFallSpeed = 1000;
         this.circleSize = 20; // Smaller size for the circle form
+        this.hit = false;
     }
 
     /**
@@ -183,6 +184,20 @@ class Player extends GameObject {
           );
         }
     }
+
+    GameOver(){
+      return this.hit;
+    }
+
+    Reset() {
+      this.pos = createVector(100, 100);
+      this.vel = createVector(0, 0);
+      this.isCircle = false;
+      this.size = 40; // Reset to original square size
+      this.shapeChangeTime = 0;
+      this.isGliding = false;
+      this.hit = false;
+    }
     /**
      * Handles collisions with other game objects.
      * 
@@ -191,8 +206,12 @@ class Player extends GameObject {
     Collide(other) {
         // Collision logic here
         //print(this.name + " collided with " + other.name);
-       if(other.name == 'Enemy'){
-        //console.log("hola");
+       if(other.name == 'Enemy'||
+          other.name == 'Projectile' ||
+          other.name == 'Projectile360'
+         ){
+          this.hit = true;
+        
        }      
     }
 
