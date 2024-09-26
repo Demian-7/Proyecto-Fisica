@@ -26,15 +26,23 @@ function setup() {
 }
 
 function keyPressed() {
-
-  if (key == ' ' ) {
-    player.Jump();
+  if (key === ' ') {
+    if (player.OnGround()) {
+      player.Jump();
+    } else {
+      player.StartGlide();
+    }
   }
-  if (key == 'Control'){
+  if (key === 'Control') {
     player.FallFast();
   }
 }
 
+function keyReleased() {
+  if (key === ' ') {
+    player.StopGlide();
+  }
+}
 function mousePressed() {
     if (!musicStarted) {
      bgMusic.loop();
