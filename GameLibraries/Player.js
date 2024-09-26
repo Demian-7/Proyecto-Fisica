@@ -46,7 +46,7 @@ class Player extends GameObject {
     Update(dt) {
         //this.pos.y += this.vel.y*dt;
         //this.vel.y += this.gravity.y*dt;
-        //this.pos.y = constrain(this.pos.y, 0, HEIGHT - this.h)
+        
 
         let gravityStep;
         if (this.isGliding){
@@ -79,7 +79,7 @@ class Player extends GameObject {
 
         //ELIMINAR MAS ADELANTE, SOLO TEST
         // Ground collision 
-         
+      this.pos.y = constrain(this.pos.y, 0, HEIGHT -this.h/ 2);
     }
 
     //Salto
@@ -109,29 +109,25 @@ class Player extends GameObject {
         noStroke();
         let wingSize = this.size / 2;
         let wingOffsetX = this.size / 2;
-        let wingOffsetY = this.size / 4;
-
-        let centerX = this.pos.x + this.size / 2;
-        let centerY = this.pos.y + this.size / 2;
-    
+        let wingOffsetY = this.size / 4;   
         // Left wing
         triangle(
-            centerX - wingOffsetX,
-            centerY,
-            centerX - wingOffsetX - wingSize,
-            centerY - wingOffsetY,
-            centerX - wingOffsetX - wingSize,
-            centerY + wingOffsetY
+          this.pos.x - wingOffsetX,
+          this.pos.y,
+          this.pos.x - wingOffsetX - wingSize,
+          this.pos.y - wingOffsetY,
+          this.pos.x - wingOffsetX - wingSize,
+          this.pos.y + wingOffsetY
         );
     
         // Right wing
         triangle(
-            centerX + wingOffsetX,
-            centerY,
-            centerX + wingOffsetX + wingSize,
-            centerY - wingOffsetY,
-            centerX + wingOffsetX + wingSize,
-            centerY + wingOffsetY
+          this.pos.x + wingOffsetX,
+          this.pos.y,
+          this.pos.x + wingOffsetX + wingSize,
+          this.pos.y - wingOffsetY,
+          this.pos.x + wingOffsetX + wingSize,
+          this.pos.y + wingOffsetY
         );
       }
     //Booleans
@@ -165,15 +161,28 @@ class Player extends GameObject {
      */
     Collide(other) {
         // Collision logic here
-        print(this.name + " collided with " + other.name);
-        this.pos.y = other ;
-           this.vel.y = 0;
+        //print(this.name + " collided with " + other.name);
+       
+        if (other == enemy){
+          console.log("collide with enemy");
+        }
     }
 
-    CheckCollition(other) {
+    CheckCollition(other) { // Other = All Gameobjects except this
         //console.log(this.name + " : Collide() is not yet defined");  // Default placeholder message
-        if (this.pos.y >= HEIGHT - this.size) {
-          this.Collide(HEIGHT - this.size)
+        // if (this.pos.y >= HEIGHT - this.size) {
+        //   this.Collide(HEIGHT - this.size)
+        // }
+        if (this.isCircle){
+
         }
+        // if (other == enemy && (
+        //   this.pos.x + this.size < other.pos.x ||
+        //   this.pos.x - this.size > other.pos.x + other.w ||
+        //   this.pos.y + this.size < other.pos.y ||
+        //   this.pos.y - this.size > other.pos.y + other.h)
+        // ){
+        //   this.Collide(other);
+        // }
     }
 }
