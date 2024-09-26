@@ -25,6 +25,7 @@ class Player extends GameObject {
         this.glideGravity = createVector(0, 500); // Reduced gravity when gliding
         this.jumpForce = 800;
         this.maxFallSpeed = 1000;
+        this.circleSize = 20; // Smaller size for the circle form
     }
 
     /**
@@ -32,7 +33,12 @@ class Player extends GameObject {
      */
     Render() {
         fill(255, 255, 255);
-        rect(this.pos.x, this.pos.y, this.w, this.h);
+        if (this.isCircle) {
+          ellipse(this.pos.x, this.pos.y, this.circleSize, this.circleSize); // Smaller circle size
+        } else {
+          rectMode(CENTER);
+          rect(this.pos.x, this.pos.y, this.size, this.size);
+        }
         if (this.isGliding){
             this.DrawWings();
         }
@@ -71,15 +77,13 @@ class Player extends GameObject {
         }
 
         // Shape change duration
-        if (this.shapeChangeTime > 0 && millis() - this.shapeChangeTime > 5000) {
+        if (this.shapeChangeTime > 0 && (millis() - this.shapeChangeTime) > 5000) {
             this.isCircle = false;
             this.size = 40; // Reset to original square size after 5 seconds
             this.shapeChangeTime = 0;
         }
-
-        //ELIMINAR MAS ADELANTE, SOLO TEST
         // Ground collision 
-      this.pos.y = constrain(this.pos.y, 0, HEIGHT -this.h/ 2);
+      this.pos.y = constrain(this.pos.y, 0, HEIGHT -this.size/ 2);
     }
 
     //Salto
@@ -89,7 +93,7 @@ class Player extends GameObject {
         }
         else{
             this.StartGlide();
-            console.log("start glide");
+            //console.log("start glide");
         }
       }
     //Caida rapida
@@ -141,6 +145,7 @@ class Player extends GameObject {
       }
     //Cuadrado -> Circulo
     ChangeShape() {
+      console.log("change shape llamado")
         this.isCircle = true;
         this.size = this.circleSize; // Set the size to the smaller circle size
         this.shapeChangeTime = millis();
@@ -154,6 +159,30 @@ class Player extends GameObject {
         this.shapeChangeTime = 0;
         this.isGliding = false;
       }
+    //Verificar que el mouse este dentro del player
+    Contains(px, py) {
+        if (this.isCircle) {
+          //let d = dist(px, py, this.pos.x, this.pos.y); // Cambiar por colision punto - circulo
+          let x1 = this.pos.x;
+          let y1 = this.pos.y;
+        
+          let x2 = px;
+          let y2 = py;
+        
+          let distX = x2 - x1;
+          let distY = y2 - y1;
+          let distance = sqrt(distX * distX + distY * distY);
+
+          return distance < this.circleSize / 2;
+        } else {
+          return (
+            px > this.pos.x - this.size / 2 &&
+            px < this.pos.x + this.size / 2 &&
+            py > this.pos.y - this.size / 2 &&
+            py < this.pos.y + this.size / 2
+          );
+        }
+    }
     /**
      * Handles collisions with other game objects.
      * 
@@ -162,27 +191,91 @@ class Player extends GameObject {
     Collide(other) {
         // Collision logic here
         //print(this.name + " collided with " + other.name);
-       
-        if (other == enemy){
-          console.log("collide with enemy");
-        }
+       if(other.name == 'Enemy'){
+        //console.log("hola");
+       }      
     }
 
-    CheckCollition(other) { // Other = All Gameobjects except this
+    CheckCollition(other) { // Other = All Gameobjects with collision shape except this
         //console.log(this.name + " : Collide() is not yet defined");  // Default placeholder message
-        // if (this.pos.y >= HEIGHT - this.size) {
-        //   this.Collide(HEIGHT - this.size)
-        // }
-        if (this.isCircle){
+        let impact = false;
+        if (!this.isCircle){    // Square Shape Collisions 
+          //   Rect to Rect  
+          if (!(this.pos.x + this.size < other.pos.x ||
+              this.pos.x - this.size > other.pos.x + other.w ||
+              this.pos.y + this.size < other.pos.y ||
+              this.pos.y - this.size > other.pos.y + other.h)){
+                impact = true;
+                //console.log("rect to rect");
+              }
+          // Rect to Circle
+          let testX = other.pos.x;
+          let testY = other.pos.y;
+        
+          let rx = this.pos.x - this.size / 2;
+          let ry = this.pos.y - this.size / 2;
+          let rw = this.size;
+          let rh = this.size;
+        
+          if (other.pos.x < rx) testX = rx;
+          else if (other.pos.x > rx + rw) testX = rx + rw;
+          if (other.pos.y < ry) testY = ry;
+          else if (other.pos.y > ry + rh) testY = ry + rh;
+        
+          let distX = other.pos.x - testX;
+          let distY = other.pos.y - testY;
+          let distance = sqrt(distX * distX + distY * distY);
+        
+          if (distance <= other.size) {
+            impact = true;
+            //console.log("rect to circle");
+          }  
+        }
+        else{ // Circle Shape Collisions
+          // Circle to Circle
+          let x1 = this.pos.x;
+          let y1 = this.pos.y;
+
+          let x2 = other.pos.x;
+          let y2 = other.pos.y;
+
+          let distX = x2 - x1;
+          let distY = y2 - y1;
+
+          let distance = sqrt(distX * distX + distY * distY);
+          if (distance <= this.size+other.size) {
+            impact = true;
+            //console.log("circle to circle");
+          }
+
+
+          // Rect to Circle
+          let testX = other.pos.x;
+          let testY = other.pos.y;
+        
+          let rx = this.pos.x - this.size / 2;
+          let ry = this.pos.y - this.size / 2;
+          let rw = this.size;
+          let rh = this.size;
+        
+          if (other.pos.x < rx) testX = rx;
+          else if (other.pos.x > rx + rw) testX = rx + rw;
+          if (other.pos.y < ry) testY = ry;
+          else if (other.pos.y > ry + rh) testY = ry + rh;
+        
+          let distX2 = other.pos.x - testX;
+          let distY2 = other.pos.y - testY;
+          let distance2 = sqrt(distX2 * distX2 + distY2 * distY2);
+        
+          if (distance2 <= other.size) {
+            impact = true;
+            console.log("circle to rect");
+          }
 
         }
-        // if (other == enemy && (
-        //   this.pos.x + this.size < other.pos.x ||
-        //   this.pos.x - this.size > other.pos.x + other.w ||
-        //   this.pos.y + this.size < other.pos.y ||
-        //   this.pos.y - this.size > other.pos.y + other.h)
-        // ){
-        //   this.Collide(other);
-        // }
+        if (impact){
+          this.Collide(other);
+        }
+        
     }
 }
