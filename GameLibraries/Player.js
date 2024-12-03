@@ -9,7 +9,7 @@ class Player extends GameObject {
      * @param {Number} playerW - The width of the player.
      * @param {Number} playerH - The height of the player.
      */
-    constructor(playerX, playerY, size) {
+    constructor(playerX, playerY, size, mass) {
         super();
         this.name = "Player";
         this.colliderShape = ColliderShape.SQUARE;
@@ -27,6 +27,13 @@ class Player extends GameObject {
         this.maxFallSpeed = 1000;
         this.circleSize = 20; // Smaller size for the circle form
         this.hit = false;
+
+        this.mass = mass;
+        this.gravityForce = createVector(0,mass * this.gravity.y);
+
+        this.fallImpulse = 1.1;
+        this.fallImpulseTime = 0.2;
+        this.fallImpulseCount = 0;
     }
 
     /**
@@ -52,14 +59,15 @@ class Player extends GameObject {
      * 
      * @param {Number} dt - Delta time used for updating the player's position.
      */
-    Update(dt) {        
+    Update(dt) {
+      this.fallImpulseCount += dt;        
       if (!this.hit){
         let gravityStep;
         if (this.isGliding){
             gravityStep = p5.Vector.mult(this.glideGravity, dt); 
         }
         else {
-            gravityStep = p5.Vector.mult(this.gravity, dt);
+            gravityStep = p5.Vector.mult(this.gravityForce, dt);
         }
         this.vel.add(gravityStep);
         
@@ -105,7 +113,12 @@ class Player extends GameObject {
     //Caida rapida
     FallFast() {
         if (!this.OnGround()) {
+         
           this.vel.y = this.maxFallSpeed;
+            this.fallImpulseCount = 0;
+            if (this.fallImpulseCount < this.fallImpulseTime){
+              this.vel.y *= this.fallImpulse;
+            }
         }
       }
      

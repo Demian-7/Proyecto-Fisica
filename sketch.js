@@ -10,7 +10,7 @@ function setup() {
   game = new GameEngine(WIDTH, HEIGHT);
   gameController = new GameController();
   
-  player = new Player(100, 100, 40);
+  player = new Player(100, 100, 40, 1);
   
   gameController.GetPlayer(player);
 
