@@ -22,7 +22,8 @@ class Player extends GameObject {
         this.shapeChangeTime = 0;
         this.gravity = createVector(0,2000);
         this.isGliding = false; // New property for gliding state
-        this.glideGravity = createVector(0, 500); // Reduced gravity when gliding
+        this.glideFriction = 0.9
+        this.glideGravity = createVector(0, 500 * this.glideFriction); // Reduced gravity when gliding
         this.jumpForce = 800;
         this.maxFallSpeed = 1000;
         this.circleSize = 20; // Smaller size for the circle form
