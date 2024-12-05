@@ -69,11 +69,20 @@ class GameEngine {
      * 
      * @param {Number} dt - Delta time used for updating object states.
      */
+    
     UpdateAll(dt) {
-        this.gameObjectList.forEach(gameObject => {
+        for (let i = this.gameObjectList.length - 1; i >= 0; i--) {
+            const gameObject = this.gameObjectList[i];
             gameObject.Update(dt);
-        });
+    
+            // Eliminar objetos fuera de la pantalla
+            if (gameObject.Offscreen && gameObject.Offscreen()) {
+                this.RemoveGameObject(gameObject);
+                console.log(`${gameObject.name} removed for being offscreen.`);
+            }
+        }
     }
+    
 
     /**
      * Check collisions between all game objects.

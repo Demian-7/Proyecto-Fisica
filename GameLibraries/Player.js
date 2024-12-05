@@ -259,7 +259,7 @@ class Player extends GameObject {
                 console.log("rect to rect");
               }
           }
-          if (other.colliderShape == ColliderShape.CIRCLE){
+          if (other.colliderShape == ColliderShape.CIRCLE || other.colliderShape === ColliderShape.TRIANGLE){
             // Rect to Circle
             let testX = other.pos.x;
             let testY = other.pos.y;
