@@ -14,6 +14,7 @@ class Player extends GameObject {
         this.name = "Player";
         this.colliderShape = ColliderShape.SQUARE;
         this.pos = createVector(playerX, playerY);
+        this.initialPos = createVector(playerX, playerY); // Store the initial position
         this.w = size;
         this.h = size;
         this.size = size; //Esto es muy cabeza
@@ -181,12 +182,13 @@ class Player extends GameObject {
       }
     //Circulo -> Cuadrado
     Reset() {
-        this.pos = createVector(playerX, playerY);
+        this.pos = this.initialPos.copy(); // Reset to initial position
         this.vel = createVector(0, 0);
         this.isCircle = false;
         this.size = 40; // Reset to original square size
         this.shapeChangeTime = 0;
         this.isGliding = false;
+        this.hit = false;
       }
     //Verificar que el mouse este dentro del player
     Contains(px, py) {
