@@ -256,7 +256,7 @@ class Player extends GameObject {
               this.pos.y + this.h < other.pos.y ||
               this.pos.y > other.pos.y + other.h)){
                 impact = true;
-                console.log("rect to rect");
+                //console.log("rect to rect");
               }
           }
           if (other.colliderShape == ColliderShape.CIRCLE || other.colliderShape === ColliderShape.TRIANGLE){

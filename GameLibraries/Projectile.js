@@ -25,7 +25,7 @@ class Projectile extends GameObject {
   Update(dt) {
       if (!this.gameOver) {
           if (this.type === 'triangle' && this.WithinAttractionRange()) {
-              console.log("Triangle within attraction range"); // Confirma la condición
+              //console.log("Triangle within attraction range"); // Confirma la condición
               // Ajusta la velocidad para atraer hacia el jugador
               this.AttractToPlayer(dt);
           } else {
@@ -80,7 +80,7 @@ class Projectile extends GameObject {
 
   // Ajusta la velocidad para atraer el proyectil hacia el jugador
   AttractToPlayer(dt) {
-      console.log("Attracting to player"); // Verifica si entra aquí
+      //console.log("Attracting to player"); // Verifica si entra aquí
       let attractionVector = p5.Vector.sub(this.player.pos, this.pos);
       attractionVector.setMag(this.attractionForce); // Ajusta la magnitud de la atracción
       this.vel.add(p5.Vector.mult(attractionVector, dt)); // Ajusta la velocidad gradualmente

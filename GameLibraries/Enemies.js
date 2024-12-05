@@ -39,7 +39,7 @@ class Enemy extends GameObject {
     this.gameOver = false;
   }
 
-  offscreen() {
+  Offscreen() {
     return this.pos.x < -this.size;
   }
 
