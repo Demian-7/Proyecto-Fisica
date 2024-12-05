@@ -6,6 +6,12 @@ let bgMusic = null;
 let musicStarted = false;
 let bgImage = null;
 
+function preload() {
+  // pre loading assets
+  bgMusic = loadSound('Ascendancy of the Cube.mp3');
+  bgImage = loadImage('synthwave_sunset.gif');
+}
+
 function setup() {
   game = new GameEngine(WIDTH, HEIGHT);
   gameController = new GameController();
@@ -14,8 +20,6 @@ function setup() {
   
   gameController.GetPlayer(player);
 
-  bgMusic = loadSound('Ascendancy of the Cube.mp3');
-  bgImage = loadImage('synthwave_sunset.gif');
 
   // theFloor = new TheFloor();
   for(let i=0; i<3; i++){
