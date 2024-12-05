@@ -6,8 +6,8 @@ class Boss extends GameObject {
       this.name = "Boss";
       this.size = 50;
       this.bossCount = bossCount;
-      this.pos = createVector(WIDTH - this.size, HEIGHT / 2);
-      this.vel = createVector(-100, 0); // Move into the screen
+      this.pos = createVector(WIDTH + this.size, HEIGHT / 2);
+      this.vel = createVector(0, 0); // Sin velocidad inicial
 
       this.angle = 0;
       this.angularVelocity = 0; // Start spinning
@@ -52,14 +52,25 @@ class Boss extends GameObject {
 
     Update(dt){
       if (!(this.gameOver)){
-      if (this.state === 'entering') {
-        this.pos.add(p5.Vector.mult(this.vel, dt));
-        if (this.pos.x <= width - this.size) {
-          this.pos.x = width - this.size;
-          this.vel.x = 0;
-          this.state = 'spinning';
-        }
+        if (this.state === 'entering') {
+          // console.log("Entrando en estado entering"); // Log para asegurarte de que entra
+          // Interpolación para mover al jefe lentamente desde fuera de la pantalla
+          let targetX = WIDTH - this.size;
+          let travelTime = 0.3 // Tiempo total para desplazarse (en segundos)
+          let speed = (targetX - this.pos.x) / travelTime; // Velocidad calculada en X
+
+          this.vel.x = speed;
+          this.pos.add(p5.Vector.mult(this.vel, dt));
+
+          // Detener el movimiento al alcanzar el punto objetivo
+          if (this.pos.x <= targetX + 5) {
+              this.pos.x = targetX;
+              this.vel.x = 0;
+              this.state = 'spinning'; // Cambiar al siguiente estado
+              // console.log("Cambio a estado spinning"); // Verifica el cambio de estado
+          }
       } else if (this.state === 'spinning') {
+        //console.log("Entrando en estado spinning"); 
         this.spinTime += dt;
         if (this.spinningClockwise) {
           this.angularVelocity += this.angularAcceleration * dt;
@@ -146,7 +157,7 @@ class Boss extends GameObject {
       // Slightly offset each projectile's trajectory to create gaps
       let projType = random(['square', 'triangle']);
       let offset = random(-PI / 16, PI / 16); // Random offset between -11.25 and +11.25 degrees
-      this.projectileList.push(new Projectile(this.pos.copy(), projType, offset));  
+      this.projectileList.push(new Projectile(this.pos.copy(), projType, offset, player));  
     }
 
     Shoot360() {
