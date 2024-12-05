@@ -116,7 +116,7 @@ class GameController extends GameObject {
         }
         else{
         this.score = floor((millis() - this.startTime) / 1000);
-        console.log("Score: " + this.score);
+        //console.log("Score: " + this.score);
         }
     }
 
