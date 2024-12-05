@@ -43,7 +43,7 @@ class Player extends GameObject {
      */
     Render() {
       if (!this.hit){
-        fill(255, 255, 255);
+        fill(173, 216, 230);
         if (this.isCircle) {
           ellipse(this.pos.x, this.pos.y, this.circleSize); // Smaller circle size
         } else {
