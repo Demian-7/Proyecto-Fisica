@@ -13,7 +13,7 @@ class GameController extends GameObject {
         this.gameOver = false;
         this.score = 0;
         this.enemyList = [];
-        this.highScore = 0;
+        this.highScore = parseInt(localStorage.getItem('highScore')) || 0; // Load high score from localStorage or initialize to 0
         this.gameStarted = false;
         this.enemySpawnInterval = 1500;
         this.lastEnemySpawnTime = 0;
@@ -31,7 +31,7 @@ class GameController extends GameObject {
     // Setup the game, initialize variables and UI
     SetUpGame() {
         this.startTime = millis();
-        
+        this.LoadHighScore(); // Load high score from localStorage
         
         this.playAgainButton = createButton('Play Again');
         this.playAgainButton.position(width / 2 - 50, height / 2 + 30);
@@ -106,6 +106,7 @@ class GameController extends GameObject {
             
             if (this.score > this.highScore) {
                 this.highScore = this.score;
+                localStorage.setItem('highScore', this.highScore); // Save to localStorage
               }
               this.playAgainButton.show();
               this.DisplayGameOver();
@@ -129,6 +130,16 @@ class GameController extends GameObject {
          if (this.boss != null){
             this.boss.GameIsOver();
          }
+    }
+
+
+    LoadHighScore() {
+        const savedHighScore = localStorage.getItem('highScore');
+        if (savedHighScore) {
+            this.highScore = parseInt(savedHighScore, 10);
+        } else {
+            this.highScore = 0; // Default to 0 if no high score exists
+        }
     }
 
     DisplayScore(){
